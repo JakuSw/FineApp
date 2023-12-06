@@ -28,7 +28,16 @@ app.MapGet("/health",
     .WithOpenApi();
 
 app.MapGet("/hello",
-        () => Results.Ok($"Hello from {appState.AppName}!"))
+        async (HttpRequest request) =>
+        {
+            var role = GetRole(request);
+            if (string.IsNullOrEmpty(role))
+            {
+                await Task.Delay(5000);
+                return Results.Ok($"Hello from {appState.AppName}! Consider our paid features!");
+            }
+            return Results.Ok($"Hello {role} from {appState.AppName}!");
+        })
     .WithName("Hello endpoint")
     .WithOpenApi();
 
@@ -51,5 +60,11 @@ app.MapPost("/set-state",
     .WithOpenApi();
 
 app.Run();
+
+string GetRole(HttpRequest httpRequest)
+{
+    var role = httpRequest.Headers.FirstOrDefault(h => h.Key == "X-Role");
+    return role.Value.ToString() != "" ? $"{role.Value.ToString().ToLower()} user" : string.Empty;
+}
 
 public record AppState(bool Healthy, bool EnableDelay, string AppName);

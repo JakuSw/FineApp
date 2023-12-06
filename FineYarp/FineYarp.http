@@ -1,0 +1,6 @@
+@FineYarp_HostAddress = http://localhost:8080
+
+GET {{FineYarp_HostAddress}}/hello
+Accept: application/json
+X-Name: Jakub
+
