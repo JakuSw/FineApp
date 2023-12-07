@@ -9,6 +9,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FineYarp", "FineYarp\FineYarp.csproj", "{E9011F89-96A2-4206-A335-696550D0A923}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FineWeb", "FineWeb\FineWeb.csproj", "{6670973E-D3A6-41CA-B734-A92619174194}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,5 +25,9 @@ Global
 		{E9011F89-96A2-4206-A335-696550D0A923}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E9011F89-96A2-4206-A335-696550D0A923}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E9011F89-96A2-4206-A335-696550D0A923}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6670973E-D3A6-41CA-B734-A92619174194}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6670973E-D3A6-41CA-B734-A92619174194}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6670973E-D3A6-41CA-B734-A92619174194}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6670973E-D3A6-41CA-B734-A92619174194}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -1,0 +1,30 @@
+﻿@page "/"
+@using FineWeb.Components.CommonComponents
+
+<PageTitle>Home</PageTitle>
+
+<div style="display: flex; justify-content: space-between;">
+
+    <div style="width: 50%; display: flex; justify-content: center; align-items: center; flex-direction: column;">
+        Controller
+    </div>
+    
+    <div style="width: 50%; display: flex; justify-content: center; align-items: center; flex-direction: column;">
+        Services
+        @foreach (var service in Services)
+        {
+            <ServiceCard Name=@service/>
+        }
+    </div>
+  
+</div>
+
+@code
+{
+    private List<string> Services { get; set; } =
+    [
+        "Service 1",
+        "Service 2",
+        "Service 3"
+    ];
+}
