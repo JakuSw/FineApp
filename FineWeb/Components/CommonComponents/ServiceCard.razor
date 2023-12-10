@@ -1,5 +1,50 @@
-<h3>@Name</h3>
+@using FineWeb.Clients
+@using FineWeb.Dtos
+@rendermode InteractiveServer
+
+@if (ServiceState is not null)
+{
+    <h4>@ServiceState.AppName</h4>
+    <p>Health: @ServiceState.Healthy</p>
+    <p>Delay enabled: @ServiceState.EnableDelay</p>
+    <p>Requests count: @ServiceState.Count</p>
+    <div style="float: left">
+        <button @onclick="SetUnhealthy">Set unhealthy</button>
+        <button @onclick="EnableDelay">Set delay</button>
+        <button @onclick="Reset">Reset</button>
+    </div>
+}
 
 @code {
-    [Parameter] public string Name { get; set; } = string.Empty;
+    [Parameter] 
+    public string Url { get; set; } = string.Empty;
+
+    private AppState? ServiceState { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var appClient = new FineAppClient(Url);
+        ServiceState = await appClient.GetStatus();
+    }
+    
+    private async Task SetUnhealthy()
+    {
+        var appClient = new FineAppClient(Url);
+        await appClient.SetUnhealthy();
+        ServiceState = await appClient.GetStatus();
+    }
+    
+    private async Task EnableDelay()
+    {
+        var appClient = new FineAppClient(Url);
+        await appClient.EnableDelay();
+        ServiceState = await appClient.GetStatus();
+    }
+    
+    private async Task Reset()
+    {
+        var appClient = new FineAppClient(Url);
+        await appClient.ResetState();
+        ServiceState = await appClient.GetStatus();
+    }
 }

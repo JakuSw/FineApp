@@ -43,3 +43,13 @@
       dockerfile: FineYarp/Dockerfile
     ports:
       - 8080:8080
+  fineweb:
+    image: fineweb
+    environment:
+      Services: "http://fineapp-a:8080/, http://fineapp-b:8080/, http://fineapp-c:8080/"
+      YarpUrl: "http://proxy:8080"
+    build:
+      context: .
+      dockerfile: FineWeb/Dockerfile
+    ports:
+      - 8079:8080

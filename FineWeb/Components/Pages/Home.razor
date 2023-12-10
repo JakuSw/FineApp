@@ -1,19 +1,25 @@
 ﻿@page "/"
 @using FineWeb.Components.CommonComponents
+@inject IConfiguration Configuration;
+
+<style>
+
+</style>
 
 <PageTitle>Home</PageTitle>
 
-<div style="display: flex; justify-content: space-between;">
+<div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
 
     <div style="width: 50%; display: flex; justify-content: center; align-items: center; flex-direction: column;">
-        Controller
+        <h3>Main client</h3>
+        <RequestPanel />
     </div>
     
     <div style="width: 50%; display: flex; justify-content: center; align-items: center; flex-direction: column;">
-        Services
+        <h3>Services</h3>
         @foreach (var service in Services)
         {
-            <ServiceCard Name=@service/>
+            <ServiceCard Url=@service/>
         }
     </div>
   
@@ -21,10 +27,12 @@
 
 @code
 {
-    private List<string> Services { get; set; } =
-    [
-        "Service 1",
-        "Service 2",
-        "Service 3"
-    ];
+    private List<string> Services { get; set; }
+    
+    protected override Task OnInitializedAsync()
+    {
+        var services = Configuration.GetValue<string>("Services");
+        Services = services.Split(",").Select(s => s.Trim()).ToList();
+        return Task.CompletedTask;
+    }
 }

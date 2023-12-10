@@ -9,7 +9,7 @@ app.UseSwagger();
 app.UseSwaggerUI();
 app.UseHttpsRedirection();
 
-var appState = new AppState(true, false, builder.Configuration.GetValue<string>("AppName")!);
+var appState = new AppState(true, false, builder.Configuration.GetValue<string>("AppName") ?? "Unknown", 0);
 
 app.MapGet("/health",
         async () =>
@@ -17,7 +17,7 @@ app.MapGet("/health",
             if (appState.EnableDelay)
             {
                 await Task.Delay(30000);
-                Results.StatusCode((int)HttpStatusCode.InternalServerError);
+                return Results.Ok();
             }
             
             return appState.Healthy
@@ -31,9 +31,10 @@ app.MapGet("/hello",
         async (HttpRequest request) =>
         {
             var role = GetRole(request);
+            appState.Count++;
             if (string.IsNullOrEmpty(role))
             {
-                await Task.Delay(5000);
+                await Task.Delay(2500);
                 return Results.Ok($"Hello from {appState.AppName}! Consider our paid features!");
             }
             return Results.Ok($"Hello {role} from {appState.AppName}!");
@@ -41,10 +42,15 @@ app.MapGet("/hello",
     .WithName("Hello endpoint")
     .WithOpenApi();
 
+app.MapGet("/status",
+        () => Results.Ok(appState))
+    .WithName("Status endpoint")
+    .WithOpenApi();
+
 app.MapGet("/reset-state",
         () =>
         { 
-            appState = new AppState(true, false, builder.Configuration.GetValue<string>("AppName")!);
+            appState = new AppState(true, false, appState.AppName, appState.Count);
             return Results.Ok("Ok");
         })
     .WithName("Reset endpoint")
@@ -53,7 +59,7 @@ app.MapGet("/reset-state",
 app.MapPost("/set-state",
         (AppState newState) =>
         { 
-            appState = newState with { AppName = builder.Configuration.GetValue<string>("AppName")! };
+            appState = new AppState(newState.Healthy, newState.EnableDelay,  appState.AppName, appState.Count);
             return Results.Ok("Done");
         })
     .WithName("Set state endpoint")
@@ -67,4 +73,10 @@ string GetRole(HttpRequest httpRequest)
     return role.Value.ToString() != "" ? $"{role.Value.ToString().ToLower()} user" : string.Empty;
 }
 
-public record AppState(bool Healthy, bool EnableDelay, string AppName);
+public class AppState(bool healthy, bool enableDelay, string appName, int count)
+{
+    public string AppName { get; set; } = appName;
+    public bool Healthy { get; set; } = healthy;
+    public bool EnableDelay { get; set; } = enableDelay;
+    public int Count { get; set; } = count;
+}
