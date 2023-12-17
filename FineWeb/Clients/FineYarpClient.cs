@@ -21,6 +21,7 @@ public class FineYarpClient
         await using var contentStream =
             await result.Content.ReadAsStreamAsync();
         var reader = new StreamReader(contentStream);
+        _httpClient.DefaultRequestHeaders.Remove("X-Name");
         return await reader.ReadToEndAsync();
     }
 }
