@@ -37,8 +37,6 @@
       - fineapp-a
       - fineapp-b
       - fineapp-c
-    ports:
-      - 8080:8080
   fineweb:
     image: fineweb
     environment:
