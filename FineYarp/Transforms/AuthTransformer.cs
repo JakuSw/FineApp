@@ -18,7 +18,7 @@ public class AuthTransformer : RequestTransform
             requestHeaders.Any(h => h.Key == "X-Name" && h.Value.ToString() != string.Empty))
         {
             var userName = requestHeaders.FirstOrDefault(h => h.Key == "X-Name");
-            var role = _authenticationService.Authenticate(userName.Value.ToString());
+            var role = _authenticationService.Authenticate(userName.Value.FirstOrDefault());
             context.ProxyRequest.Headers.Add("X-Role", role.ToString());
         }
         return ValueTask.CompletedTask;
