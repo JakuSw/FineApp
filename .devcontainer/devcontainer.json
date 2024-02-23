@@ -1,0 +1,15 @@
+{
+	"name": "C# (.NET)",
+	"image": "mcr.microsoft.com/devcontainers/dotnet:8.0",
+	"features": {},
+	"portsAttributes": {
+		"8080": {
+			"protocol": "http"
+		},
+		"8081": {
+			"protocol": "https"
+		}
+	},
+	"forwardPorts": [8080, 8081],
+	"postCreateCommand": "dotnet restore"
+}
