@@ -1,20 +1,17 @@
 ﻿services:
   fineapp-a:
-    image: fineapp
     environment:
       AppName: A
     build:
       context: .
       dockerfile: FineApp/Dockerfile
   fineapp-b:
-    image: fineapp
     environment:
       AppName: B
     build:
       context: .
       dockerfile: FineApp/Dockerfile
   fineapp-c:
-    image: fineapp
     environment:
       AppName: C
     build:
@@ -23,8 +20,9 @@
   cache:
     image: redis:6.2-alpine
     restart: always
+    ports:
+      - 6379:6379
   proxy:
-    image: proxy
     environment:
       ReverseProxy__Clusters__clusterA__Destinations__destination1__Address: "http://fineapp-a:8080/"
       ReverseProxy__Clusters__clusterA__Destinations__destination2__Address: "http://fineapp-b:8080/"
@@ -38,7 +36,6 @@
       - fineapp-b
       - fineapp-c
   fineweb:
-    image: fineweb
     environment:
       Services: "http://fineapp-a:8080/, http://fineapp-b:8080/, http://fineapp-c:8080/"
       YarpUrl: "http://proxy:8080"
